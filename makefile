@@ -86,6 +86,12 @@ dist_dir := dist
 bdist_file := $(dist_dir)/$(package_name)-$(package_version)-py2.py3-none-any.whl
 sdist_file := $(dist_dir)/$(package_name)-$(package_version).tar.gz
 
+# Distro packages
+rpmbuild_dir := $(HOME)/rpmbuild
+# fedora_package_release := 1-fc32
+# fedora_srpm_filename := $(package_name)-$(package_version)-$(fedora_package_release)-noarch.rpm
+fedora_spec_file := packaging/fedora/pywbem.spec
+
 dist_files := $(bdist_file) $(sdist_file)
 
 # Source files in the packages
@@ -211,6 +217,7 @@ help:
 	@echo "  install_os - Install OS-level installation and runtime prereqs"
 	@echo "  develop_os - Install OS-level development prereqs"
 	@echo "  upload     - build + upload the distribution archive files to PyPI"
+	@echo "  rhel_rpm   - build + create binary and source RPMs for RHEL"
 	@echo "  clean      - Remove any temporary files"
 	@echo "  clobber    - Remove everything created to ensure clean start"
 	@echo ""
@@ -360,6 +367,14 @@ upload: _check_version $(dist_files)
 	@echo "makefile: Uploading to PyPI: pywbem $(package_version)"
 	twine upload $(dist_files)
 	@echo "makefile: Done uploading to PyPI"
+	@echo "makefile: Target $@ done."
+
+.PHONY: fedora_rpm
+fedora_rpm: $(sdist_file)
+	@echo "makefile: Creating Fedora RPMs"
+	cp -p $(sdist_file) $(rpmbuild_dir)/SOURCES/
+	rpmbuild -ba $(fedora_spec_file)
+	@echo "makefile: Done creating Fedora RPMs"
 	@echo "makefile: Target $@ done."
 
 .PHONY: html
