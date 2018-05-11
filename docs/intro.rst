@@ -108,7 +108,7 @@ Pywbem is supported in these environments:
 Limitations:
 
 * On Windows (native), pywbem is not supported on Python 2.6, because the
-  M2CryptoWin32/64 packages do not support Python 2.6.
+  M2Crypto package does not support Python 2.6.
 
 
 .. _`Installing to Linux`:
@@ -205,7 +205,7 @@ Installing to OS-X
 * Only on Python 2 on newer OS-X releases:
 
   The ``pywbem_os_setup.sh`` script installs the ``openssl`` package needed by
-  the M2Crypto Python package. On newer OS-X releases, you may see a notice
+  the ``M2Crypto`` Python package. On newer OS-X releases, you may see a notice
   that the ``openssl`` package is "not linked" because the TLS implementation
   provided with OS-X is available. In that case, you need to set up the
   following environment variables for use by the pywbem package installation
@@ -235,31 +235,26 @@ This section describes the installation of pywbem into a native Windows
 environment (i.e. without using a UNIX-like environment; for that, see
 :ref:`Installing to a UNIX-like environment under Windows`):
 
-* Determine the bit size of the active Python environment, for example as
-  follows:
+* Download the ``pywbem_os_setup.bat`` script from one of these sources:
+
+  - :download:`pywbem_os_setup.bat <../pywbem_os_setup.bat>` on this site
+
+  - `pywbem_os_setup.bat <https://raw.githubusercontent.com/pywbem/pywbem/master/pywbem_os_setup.bat>`_
+    on the `master` branch of the pywbem Git repository
+
+  That script installs OS-level prerequisite packages needed by pywbem.
+
+* Execute the ``pywbem_os_setup.bat`` script:
 
   .. code-block:: bash
 
-      > python -c "import ctypes; print(ctypes.sizeof(ctypes.c_void_p)*8)"
-      64
+      > pywbem_os_setup.bat
 
-* Install the Windows build of M2Crypto into the active Python environment:
+  The script uses the `Chocolatey package manager`_ to install packages to
+  Windows, and it is assumed that Chocolatey is installed.
 
-  For a 32-bit Python environment:
-
-  .. code-block:: bash
-
-      > pip install M2CryptoWin32
-
-  For a 64-bit Python environment:
-
-  .. code-block:: bash
-
-      > pip install M2CryptoWin64
-
-  Note that these Python packages are binary builds and therefore do not invoke
-  Swig at their installation time. Therefore, there are no prerequisite
-  OS-level packages to install.
+  This script will also install the ``M2Crypto`` Python package into the active
+  Python environment.
 
 * Install pywbem (and its other prerequisite Python packages) into the active
   Python environment:
@@ -267,6 +262,8 @@ environment (i.e. without using a UNIX-like environment; for that, see
   .. code-block:: bash
 
       > pip install pywbem
+
+.. _`Chocolatey package manager`: https://chocolatey.org/
 
 
 .. _`Installing to a UNIX-like environment under Windows`:
@@ -288,8 +285,8 @@ Windows.
 
       > pip install pywbem
 
-  If the Swig compilation during installation of M2Crypto fails, there may be
-  components of the UNIX-like environment missing. When using CygWin, these
+  If the Swig compilation during installation of ``M2Crypto`` fails, there may
+  be components of the UNIX-like environment missing. When using CygWin, these
   may be installed using the CygWin setup program, and the packages are listed
   in :ref:`Prerequisite operating system packages for install`. For other
   UNIX-like environments, there should be similar packages (please tell us by

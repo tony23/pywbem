@@ -119,6 +119,12 @@ Released: not yet
   objects that states that `copy.copy()` and `copy.deepcopy()` can be used
   to create completely shallow or completely deep copies (Issue #1251).
 
+* Installation on Windows is now more automated by means of a new
+  `pywbem_os_setup.bat` script. As part of that, the latest `M2Crypto` version
+  0.30.1 is now used on Windows, and no longer the somewhat aged versions in
+  the `M2CryptoWin32/64` packages. For details, see the installation section
+  in the documentation.
+  
 **Cleanup**
 
 * Moved class `NocaseDict` into its own module (Issue #848).
