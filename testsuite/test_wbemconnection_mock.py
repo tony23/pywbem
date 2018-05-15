@@ -153,9 +153,9 @@ def tst_class():
     Builds and returns a single class: CIM_Foo that to be used as a
     test class for the mock class tests.
     """
-    qkey = {'Key': CIMQualifier('Key', True, propagated=False)}
-    dkey = {'Description': CIMQualifier('Description', 'blah blah',
-                                        propagated=False)}
+    pkey = {'Description': CIMQualifier('Description', 'property')}
+    qkey = {'Key': CIMQualifier('Key', True)}
+    dkey = {'Description': CIMQualifier('Description', 'blah blah')}
 
     c = CIMClass(
         'CIM_Foo', qualifiers=dkey,
@@ -185,6 +185,7 @@ def tst_classes(tst_class):
     qkey = {'Key': CIMQualifier('Key', True, propagated=False)}
     dkey = {'Description': CIMQualifier('Description', 'blah blah',
                                         propagated=False)}
+    pkey = {'Description': CIMQualifier('Description', 'property')}
 
     c2 = CIMClass(
         'CIM_Foo_sub', superclass='CIM_Foo', qualifiers=dkey,
@@ -1502,9 +1503,12 @@ class TestClassOperations(object):
         assert tst_class is not None
 
         conn.add_cimobjects(tst_classes, namespace=ns)
-
-        cl = conn.GetClass(cn, namespace=ns, IncludeQualifiers=iq,
-                           LocalOnly=True, IncludeClassOrigin=ico)
+        if iq is None:
+            cl = conn.GetClass(cn, namespace=ns, IncludeQualifiers=iq,
+                               LocalOnly=True)
+        else:
+            cl = conn.GetClass(cn, namespace=ns, IncludeQualifiers=iq,
+                               LocalOnly=True)
 
         cl.path = None
 
@@ -1527,7 +1531,7 @@ class TestClassOperations(object):
             for method in c_tst.methods:
                 c_tst.methods[method].class_origin = None
 
-        assert cl == c_tst
+        assert(cl == c_tst)
 
     @pytest.mark.parametrize(
         "ns", [None, 'root/blah'])
