@@ -208,15 +208,15 @@ class TestServerClass(BaseMethodsForTests):
     def build_obj_mgr_inst(self, conn, namespace, system_name,
                            object_manager_name):
         """
-        Build an instance of the CIM_ObjectManager Class
+        Build the Faked Class Repository and build the core instances for
+        this test.
         """
         omdict = {"SystemCreationClassName": "CIM_ComputerSystem",
                   "CreationClassName": "CIM_ObjectManager",
                   "SystemName": system_name,
                   "Name": object_manager_name,
-                  "ElementName": "PywbemMock",
-                  "Description": "PywbemMock CIM Server Version 2.15.0 "
-                                 "Released"}
+                  "ElementName": "Pegasus",
+                  "Description": "Pegasus CIM Server Version 2.15.0 Released"}
 
         ominst = self.inst_from_classname(conn, "CIM_ObjectManager",
                                           namespace=namespace,
